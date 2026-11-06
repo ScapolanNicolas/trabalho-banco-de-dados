@@ -1,0 +1,35 @@
+:root {
+  --marca: #b5121b;
+  --marca-escura: #8e0e15;
+  --fundo: #f5f6f8;
+}
+body { background: var(--fundo); }
+.bg-marca { background: var(--marca); }
+.text-marca { color: var(--marca); }
+.btn-marca { background: var(--marca); color: #fff; border-color: var(--marca); }
+.btn-marca:hover, .btn-marca:focus { background: var(--marca-escura); color: #fff; border-color: var(--marca-escura); }
+.navbar .nav-link { color: rgba(255, 255, 255, .92); }
+.navbar .nav-link:hover, .navbar .nav-link:focus { color: #fff; }
+.navbar .nav-link.active { color: #fff; font-weight: 600; border-bottom: 2px solid #fff; }
+/* texto secundário mais escuro para passar no contraste AA também sobre fundos cinza */
+.text-secondary { color: #565e66 !important; }
+.titulo-secao { font-size: 1.75rem; font-weight: 700; letter-spacing: -.01em; }
+
+.kpi { border-left: 4px solid var(--marca); }
+.kpi .valor { font-size: 1.6rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi .rotulo { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; }
+
+.table td, .table th { white-space: nowrap; }
+.table td.quebra { white-space: normal; }
+.text-end, .num { font-variant-numeric: tabular-nums; }
+
+.card-plano.inativo { opacity: .6; }
+.card-plano .preco { font-size: 1.5rem; font-weight: 700; color: var(--marca); }
+
+.barra-rank { height: 6px; background: #f1d3d5; border-radius: 3px; overflow: hidden; }
+.barra-rank > span { display: block; height: 100%; background: var(--marca); }
+
+@media print {
+  .navbar, .no-print, .alert, .toast-container { display: none !important; }
+  body { background: #fff; }
+}

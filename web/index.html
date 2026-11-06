@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academia Movimento — Gestão</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/estilo.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-marca sticky-top shadow-sm">
+  <div class="container-fluid px-3 px-lg-4">
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#" data-secao="painel">
+      <i class="bi bi-activity fs-4"></i> Academia Movimento
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto gap-lg-1">
+        <li class="nav-item"><a class="nav-link active" href="#" data-secao="painel"><i class="bi bi-speedometer2"></i> Painel</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" data-secao="alunos"><i class="bi bi-people"></i> Alunos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" data-secao="planos"><i class="bi bi-card-checklist"></i> Planos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" data-secao="pagamentos"><i class="bi bi-cash-coin"></i> Pagamentos</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="container-fluid px-3 px-lg-4 py-4">
+
+  <div class="alert alert-light border small d-flex flex-wrap align-items-center gap-2 mb-4">
+    <i class="bi bi-info-circle text-marca"></i>
+    <span>Protótipo visual — dados fictícios iguais aos do script <code>03_carga.sql</code>. Data de referência: <strong id="dataRef"></strong>. Alterações ficam salvas só neste navegador.</span>
+    <button class="btn btn-sm btn-outline-secondary ms-auto" id="btnReset"><i class="bi bi-arrow-counterclockwise"></i> Restaurar dados de exemplo</button>
+  </div>
+
+  <!-- ================= PAINEL ================= -->
+  <section id="sec-painel" class="secao">
+    <h1 class="titulo-secao mb-3">Painel geral</h1>
+    <div class="row g-3 mb-4" id="kpis"></div>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header bg-white fw-semibold">Receita recebida por mês (2026)</div>
+          <div class="card-body"><canvas id="graficoReceita" height="120"></canvas></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header bg-white fw-semibold">Modalidades mais procuradas</div>
+          <ul class="list-group list-group-flush" id="rankingModalidades"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ALUNOS ================= -->
+  <section id="sec-alunos" class="secao d-none">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+      <h1 class="titulo-secao mb-0">Alunos</h1>
+      <button class="btn btn-marca ms-auto" data-bs-toggle="collapse" data-bs-target="#boxCadAluno">
+        <i class="bi bi-person-plus"></i> Novo aluno
+      </button>
+    </div>
+
+    <div class="collapse mb-4" id="boxCadAluno">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white fw-semibold">Cadastro de aluno</div>
+        <div class="card-body">
+          <form id="formAluno" class="row g-3" novalidate>
+            <div class="col-md-6">
+              <label class="form-label" for="aNome">Nome completo *</label>
+              <input class="form-control" id="aNome" required minlength="5" maxlength="100">
+              <div class="invalid-feedback">Informe o nome completo (mín. 5 caracteres).</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="aCpf">CPF *</label>
+              <input class="form-control" id="aCpf" required placeholder="000.000.000-00" inputmode="numeric">
+              <div class="invalid-feedback" id="aCpfMsg">CPF inválido.</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="aNasc">Data de nascimento *</label>
+              <input type="date" class="form-control" id="aNasc" required>
+              <div class="invalid-feedback">Aluno deve ter no mínimo 14 anos.</div>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label" for="aSexo">Sexo *</label>
+              <select class="form-select" id="aSexo" required>
+                <option value="F">Feminino</option><option value="M">Masculino</option><option value="O">Outro</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="aEmail">E-mail *</label>
+              <input type="email" class="form-control" id="aEmail" required>
+              <div class="invalid-feedback" id="aEmailMsg">E-mail inválido.</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="aTel">Telefone *</label>
+              <input class="form-control" id="aTel" required placeholder="(11) 90000-0000" inputmode="numeric">
+              <div class="invalid-feedback">Telefone inválido.</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="aPlano">Plano *</label>
+              <select class="form-select" id="aPlano" required></select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label" for="aVenc">Dia de vencimento</label>
+              <select class="form-select" id="aVenc">
+                <option>5</option><option selected>10</option><option>15</option><option>20</option>
+              </select>
+            </div>
+            <div class="col-12 d-flex gap-2">
+              <button class="btn btn-marca" type="submit"><i class="bi bi-check2"></i> Salvar matrícula</button>
+              <button class="btn btn-outline-secondary" type="reset">Limpar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="row g-2 mb-3">
+          <div class="col-md-6">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input class="form-control" id="buscaAluno" placeholder="Buscar por nome, CPF ou e-mail">
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <select class="form-select" id="filtroStatus" aria-label="Situação">
+              <option value="">Todas as situações</option>
+              <option>ATIVA</option><option>SUSPENSA</option><option>CANCELADA</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-3">
+            <select class="form-select" id="filtroPlano" aria-label="Plano"></select>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr><th>#</th><th>Nome</th><th>CPF</th><th class="d-none d-md-table-cell">Contato</th><th>Plano</th><th>Situação</th><th></th></tr>
+            </thead>
+            <tbody id="tabelaAlunos"></tbody>
+          </table>
+        </div>
+        <div class="small text-secondary mt-2" id="contAlunos"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLANOS ================= -->
+  <section id="sec-planos" class="secao d-none">
+    <h1 class="titulo-secao mb-3">Planos</h1>
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-white fw-semibold">Cadastro de plano</div>
+          <div class="card-body">
+            <form id="formPlano" class="row g-3" novalidate>
+              <div class="col-12">
+                <label class="form-label" for="pNome">Nome *</label>
+                <input class="form-control" id="pNome" required maxlength="50">
+                <div class="invalid-feedback" id="pNomeMsg">Informe um nome.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="pDesc">Descrição</label>
+                <textarea class="form-control" id="pDesc" rows="2" maxlength="255"></textarea>
+              </div>
+              <div class="col-6">
+                <label class="form-label" for="pDur">Duração *</label>
+                <select class="form-select" id="pDur">
+                  <option value="1">1 mês</option><option value="3">3 meses</option>
+                  <option value="6">6 meses</option><option value="12">12 meses</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label" for="pValor">Valor mensal (R$) *</label>
+                <input type="number" class="form-control" id="pValor" min="0.01" step="0.01" required>
+                <div class="invalid-feedback">Valor deve ser maior que zero.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="pLimite">Modalidades coletivas incluídas: <strong id="pLimiteTxt">2</strong></label>
+                <input type="range" class="form-range" id="pLimite" min="1" max="7" value="2">
+              </div>
+              <div class="col-12">
+                <button class="btn btn-marca w-100" type="submit"><i class="bi bi-plus-lg"></i> Cadastrar plano</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="row g-3" id="listaPlanos"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PAGAMENTOS ================= -->
+  <section id="sec-pagamentos" class="secao d-none">
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+      <h1 class="titulo-secao mb-0">Relatório de pagamentos</h1>
+      <div class="ms-auto d-flex gap-2 no-print">
+        <button class="btn btn-outline-secondary" id="btnCsv"><i class="bi bi-filetype-csv"></i> Exportar CSV</button>
+        <button class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir</button>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-3 no-print">
+      <div class="card-body row g-2 align-items-end">
+        <div class="col-6 col-md-2">
+          <label class="form-label small" for="fDe">Competência de</label>
+          <input type="month" class="form-control" id="fDe" value="2026-05">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small" for="fAte">até</label>
+          <input type="month" class="form-control" id="fAte" value="2026-11">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small" for="fStatus">Situação</label>
+          <select class="form-select" id="fStatus">
+            <option value="">Todas</option><option>PAGO</option><option>PENDENTE</option><option>ATRASADO</option><option>CANCELADO</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small" for="fForma">Forma</label>
+          <select class="form-select" id="fForma">
+            <option value="">Todas</option><option>PIX</option><option>CARTAO_CREDITO</option><option>CARTAO_DEBITO</option><option>BOLETO</option><option>DINHEIRO</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small" for="fAluno">Aluno</label>
+          <input class="form-control" id="fAluno" placeholder="Filtrar por nome">
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3" id="resumoPag"></div>
+
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr><th>#</th><th>Aluno</th><th>Competência</th><th>Vencimento</th><th class="text-end">Valor</th><th>Pagamento</th><th>Forma</th><th>Situação</th><th class="no-print"></th></tr>
+          </thead>
+          <tbody id="tabelaPag"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= MODAL: DETALHE DO ALUNO ================= -->
+<div class="modal fade" id="modalAluno" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="mdTitulo">Aluno</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body" id="mdCorpo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: REGISTRAR PAGAMENTO (simula a transação) ================= -->
+<div class="modal fade" id="modalPagar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formPagar">
+      <div class="modal-header">
+        <h2 class="modal-title h5">Registrar pagamento</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-2" id="pgInfo"></p>
+        <label class="form-label" for="pgForma">Forma de pagamento</label>
+        <select class="form-select mb-3" id="pgForma">
+          <option>PIX</option><option value="CARTAO_CREDITO">Cartão de crédito</option><option value="CARTAO_DEBITO">Cartão de débito</option><option>BOLETO</option><option>DINHEIRO</option>
+        </select>
+        <div class="small text-secondary">Equivale a <code>CALL sp_registrar_pagamento(id, forma, data)</code>: quita a parcela, reativa a matrícula suspensa (se não restar atraso) e grava o histórico — tudo ou nada.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-marca"><i class="bi bi-check2-circle"></i> Confirmar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="toast" class="toast align-items-center text-bg-dark border-0" role="status" aria-live="polite">
+    <div class="d-flex"><div class="toast-body" id="toastMsg"></div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="js/dados.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
